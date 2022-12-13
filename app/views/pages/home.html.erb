@@ -7,7 +7,7 @@
 <div>
   <%= form_with url: root_path, method: :get do |form| %>
     <%= form.label :annual_revenue %>
-    <%= form.text_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
+    <%= form.number_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
     <br>
     <%= form.label :enterprise_number %>
     <%= form.text_field :enterprise_number, class: "mb-3", value: params[:enterprise_number] %>
@@ -16,7 +16,7 @@
     <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
     <br>
     <%= form.label :natural_person %>
-    <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].present? %>
+    <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].to_i == 1 %>
     <br>
     <%= form.label :profession %>
     <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>

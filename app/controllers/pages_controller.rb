@@ -7,7 +7,7 @@ class PagesController < ApplicationController
       "annualRevenue": params[:annual_revenue].to_i,
       "enterpriseNumber": params[:enterprise_number],
       "legalName": params[:legal_name],
-      "naturalPerson": params[:natural_person].present?,
+      "naturalPerson": params[:natural_person].to_i == 1,
       "nacebelCodes": QuoteReader.new(params[:profession]).codes
     }
     @quote = ApiClient.new(quote_params).quote
