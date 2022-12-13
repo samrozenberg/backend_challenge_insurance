@@ -1,23 +1,27 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container mt-3">
+<h1 class="text-center">Generate your RC Pro simulation</h1>
+
 
 <%= @quote.as_json %>
 
-<%= form_with url: root_path, method: :get do |form| %>
-  <%= form.label :annual_revenue %>
-  <%= form.text_field :annual_revenue, value: params[:annual_revenue] %>
-  <br>
-  <%= form.label :enterprise_number %>
-  <%= form.text_field :enterprise_number, value: params[:enterprise_number] %>
-  <br>
-  <%= form.label :legal_name %>
-  <%= form.text_field :legal_name, value: params[:legal_name] %>
-  <br>
-  <%= form.label :natural_person %>
-  <%= form.check_box :natural_person, checked: params[:natural_person].present? %>
-  <br>
-  <%= form.label :profession %>
-  <%= form.text_field :profession, value: params[:profession] %>
-  <br>
-  <%= form.submit "Search" %>
-<% end %>
+<div>
+  <%= form_with url: root_path, method: :get do |form| %>
+    <%= form.label :annual_revenue %>
+    <%= form.text_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
+    <br>
+    <%= form.label :enterprise_number %>
+    <%= form.text_field :enterprise_number, class: "mb-3", value: params[:enterprise_number] %>
+    <br>
+    <%= form.label :legal_name %>
+    <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
+    <br>
+    <%= form.label :natural_person %>
+    <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].present? %>
+    <br>
+    <%= form.label :profession %>
+    <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>
+    <br>
+    <%= form.submit "Search" %>
+  <% end %>
+</div>
+</div>
