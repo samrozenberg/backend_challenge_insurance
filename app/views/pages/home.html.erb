@@ -21,53 +21,65 @@
       <%= form.label :profession %>
       <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>
       <br>
-      <%= form.submit "Search" %>
+      <%= form.submit "Generate" %>
     <% end %>
   </div>
 
   <div class="w-50">
     <h3>Suggested covers</h3>
-    <p>Based on the information in your request, here are the available covers that we advise you to take:</p>
-    <%= @quote.as_json %>
-    <div class="d-flex justify-content-around">
-      <table>
-        <tr>
-          <th>Covers' costs</th>
-        </tr>
-        <tr>
-          <th>After Delivery</th>
-          <td><%= @quote.dig("data", "grossPremiums", "afterDelivery") %>€</td>
-        </tr>
-        <tr>
-          <th>Public Liability</th>
-          <td><%= @quote.dig("data", "grossPremiums", "publicLiability") %>€</td>
-        </tr>
-        <tr>
-          <th>Professional Indemnity</th>
-          <td><%= @quote.dig("data", "grossPremiums", "professionalIndemnity") %>€</td>
-        </tr>
-        <tr>
-          <th>Entrusted Objects</th>
-          <td><%= @quote.dig("data", "grossPremiums", "entrustedObjects") %>€</td>
-        </tr>
-      </table>
-      <table>
-        <tr>
-          <th>Coverage Ceiling</th>
-          <td><%= @quote.dig("data", "coverageCeiling") %>€</td>
-        </tr>
-        <tr>
-          <th>Deductible</th>
-          <td><%= @quote.dig("data", "deductible") %>€</td>
-        </tr>
-      </table>
-    </div>
+    <p>Based on the information in your request, you will find here the available covers that we advise you to take:</p>
+    <%# <%= @quote.as_json %>
+    <% if @quote.dig("success") == true %>
+      <div class="d-flex justify-content-around">
+        <table>
+          <tr>
+            <th>Covers' costs</th>
+          </tr>
+          <tr>
+            <th>After Delivery</th>
+            <td><%= @quote.dig("data", "grossPremiums", "afterDelivery") %>€</td>
+          </tr>
+          <tr>
+            <th>Public Liability</th>
+            <td><%= @quote.dig("data", "grossPremiums", "publicLiability") %>€</td>
+          </tr>
+          <tr>
+            <th>Professional Indemnity</th>
+            <td><%= @quote.dig("data", "grossPremiums", "professionalIndemnity") %>€</td>
+          </tr>
+          <tr>
+            <th>Entrusted Objects</th>
+            <td><%= @quote.dig("data", "grossPremiums", "entrustedObjects") %>€</td>
+          </tr>
+          <tr>
+            <th>Legal Expenses</th>
+            <td><%= @quote.dig("data", "grossPremiums", "legalExpenses") %>€</td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+            <th>Coverage Ceiling</th>
+            <td><%= @quote.dig("data", "coverageCeiling") %>€</td>
+          </tr>
+          <tr>
+            <th>Deductible</th>
+            <td><%= @quote.dig("data", "deductible") %>€</td>
+          </tr>
+        </table>
+      </div>
+    <% else %>
+      <% if request.original_fullpath.include?("annual_revenue") %>
+        <p class="fst-italic">The information you have entered are false or not sufficient to complete the simulation.</p>
+      <% else %>
+        <p class="fst-italic">Fill in the form to receive your insurance advise !</p>
+      <% end %>
+    <% end %>
   </div>
 </div>
 
 <% if !user_signed_in? %>
   <div class="mt-5 text-center">
-    <%= link_to "Login to Save and Display your simulations", new_user_session_path, class: "btn btn-primary" %>
+    <%= link_to "Login to Save and Display all your simulations", new_user_session_path, class: "btn btn-primary" %>
   </div>
 <% else %>
 
