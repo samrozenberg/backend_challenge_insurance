@@ -1,2 +1,129 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container mt-3">
+<h1 class="text-center mb-4">Generate your RC Pro simulation</h1>
+<% if !user_signed_in? %>
+  <h6 class="text-center mb-5 fst-italic text-secondary">It is advised to log in before generating a simulation in order to automatically save it and to easily return back to it later.</h6>
+<% end %>
+
+
+
+<div class="d-flex justify-content-between">
+  <div class="w-50">
+    <%= form_with url: root_path, method: :get do |form| %>
+      <%= form.label :annual_revenue%>
+      <%= form.number_field :annual_revenue, class: "mb-3", placeholder: "In €", value: params[:annual_revenue] %>
+      <br>
+      <%= form.label :enterprise_number %>
+      <%= form.text_field :enterprise_number, class: "mb-3", placeholder: "must be 10 digits", value: params[:enterprise_number] %>
+      <br>
+      <%= form.label :legal_name %>
+      <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
+      <br>
+      <%= form.label :natural_person %>
+      <%= form.check_box :natural_person, class: "mb-3",  checked: params[:natural_person].to_i == 1 %>
+      <br>
+      <%= form.label :profession, "Area of work" %>
+      <%= form.text_field :profession, class: "mb-3", placeholder: "'medical', 'education',...", value: params[:profession] %>
+      <br>
+      <%= form.submit "Generate" %>
+    <% end %>
+  </div>
+
+  <div class="w-50">
+    <h3>Suggested covers</h3>
+    <p>Based on the information in your request, you will find here the available covers that we advise you to take:</p>
+    <%# <%= @quote.as_json %>
+    <% if @quote && @quote.dig("success") == true %>
+      <div class="d-flex justify-content-around">
+        <table>
+          <tr>
+            <th>Covers' costs</th>
+          </tr>
+          <tr>
+            <th>After Delivery</th>
+            <td><%= @quote.dig("data", "grossPremiums", "afterDelivery") %>€</td>
+          </tr>
+          <tr>
+            <th>Public Liability</th>
+            <td><%= @quote.dig("data", "grossPremiums", "publicLiability") %>€</td>
+          </tr>
+          <tr>
+            <th>Professional Indemnity</th>
+            <td><%= @quote.dig("data", "grossPremiums", "professionalIndemnity") %>€</td>
+          </tr>
+          <tr>
+            <th>Entrusted Objects</th>
+            <td><%= @quote.dig("data", "grossPremiums", "entrustedObjects") %>€</td>
+          </tr>
+          <tr>
+            <th>Legal Expenses</th>
+            <td><%= @quote.dig("data", "grossPremiums", "legalExpenses") %>€</td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+            <th>Coverage Ceiling<br>(<%= @cov_formula %> formula suggested)</th>
+            <td><%= @quote.dig("data", "coverageCeiling") %>€</td>
+          </tr>
+          <tr>
+            <th>Deductible<br>(<%= @ded_formula %> formula suggested)</th>
+            <td><%= @quote.dig("data", "deductible") %>€</td>
+          </tr>
+        </table>
+      </div>
+    <% else %>
+      <% if request.original_fullpath.include?("annual_revenue") %>
+        <p class="fst-italic">❌ The information you have entered are false or not sufficient to complete the simulation. ❌</p>
+      <% else %>
+        <p class="fst-italic">🚀 Fill in the form to receive your insurance advise ! 🚀</p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<% if !user_signed_in? %>
+  <div class="mt-5 text-center">
+    <%= link_to "Login to Save and Display all your simulations", new_user_session_path, class: "btn btn-primary" %>
+    <br>
+    <%= link_to "You don't have an account ? Sign up !", new_user_registration_path, class: "btn btn-success mt-3" %>
+  </div>
+<% else %>
+  <div class="text-center">
+    <h2 class="mt-4 mb-3">Your Simulations</h2>
+    <% if @simulations.count > 0 %>
+      <table style="margin-left:auto;margin-right:auto;" class="mb-3">
+        <tr>
+          <th>Date</th>
+          <th>Annual Revenue</th>
+          <th>Enterprise Number</th>
+          <th>Legal Name</th>
+          <th>Natural Person</th>
+          <th>Profession</th>
+        </tr>
+        <% @simulations.reverse.each do |simulation| %>
+          <tr>
+            <td><%= simulation.created_at.strftime("%e %^b %Y") %></td>
+            <% uri = URI.parse(simulation.url) %>
+            <% params = CGI.parse(uri.query) %>
+            <td><%= params['annual_revenue'].first %></td>
+            <td><%= params["enterprise_number"].first %></td>
+            <td><%= params["legal_name"].first %></td>
+            <% if params["natural_person"].count == 2 %>
+              <td>Yes</td>
+            <% else %>
+              <td>No</td>
+            <% end %>
+            <td><%= params["profession"].first %></td>
+            <td><%= link_to "Open", "#{simulation.url}" %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+    <p>You don't have any simulation yet.</p>
+    <% end %>
+  </div>
+
+<% end %>
+
+
+
+</div>
