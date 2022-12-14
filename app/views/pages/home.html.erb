@@ -31,7 +31,7 @@
   <div class="w-50">
     <h3>Suggested covers</h3>
     <p>Based on the information in your request, you will find here the available covers that we advise you to take:</p>
-    <%# <%= @quote.as_json %>
+    <%= @quote.as_json %>
     <% if @quote && @quote.dig("success") == true %>
       <div class="d-flex justify-content-around">
         <table>
