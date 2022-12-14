@@ -1,5 +1,8 @@
 <div class="container mt-3">
-<h1 class="text-center mb-3">Generate your RC Pro simulation</h1>
+<h1 class="text-center mb-4">Generate your RC Pro simulation</h1>
+<% if !user_signed_in? %>
+  <h6 class="text-center mb-5 fst-italic text-secondary">It is advised to log in before generating a simulation in order to automatically save it and to easily return back to it later.</h6>
+<% end %>
 
 
 
@@ -69,9 +72,9 @@
       </div>
     <% else %>
       <% if request.original_fullpath.include?("annual_revenue") %>
-        <p class="fst-italic">The information you have entered are false or not sufficient to complete the simulation.</p>
+        <p class="fst-italic">❌ The information you have entered are false or not sufficient to complete the simulation. ❌</p>
       <% else %>
-        <p class="fst-italic">Fill in the form to receive your insurance advise !</p>
+        <p class="fst-italic">🚀 Fill in the form to receive your insurance advise ! 🚀</p>
       <% end %>
     <% end %>
   </div>
@@ -80,6 +83,8 @@
 <% if !user_signed_in? %>
   <div class="mt-5 text-center">
     <%= link_to "Login to Save and Display all your simulations", new_user_session_path, class: "btn btn-primary" %>
+    <br>
+    <%= link_to "You don't have an account ? Sign up !", new_user_registration_path, class: "btn btn-success mt-3" %>
   </div>
 <% else %>
 
