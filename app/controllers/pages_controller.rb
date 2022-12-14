@@ -3,6 +3,7 @@ class PagesController < ApplicationController
 
   def home
     # @quote = Quote.new
+    @simulations = Simulation.where(user: current_user)
     if request.original_fullpath.include?("annual_revenue")
       quote_params = {
         "annualRevenue": params[:annual_revenue].to_i,
@@ -12,7 +13,6 @@ class PagesController < ApplicationController
         "nacebelCodes": QuoteReader.new(params[:profession]).codes
       }
       @quote = ApiClient.new(quote_params).quote
-      @simulations = Simulation.where(user: current_user)
 
       if @quote["success"] && Simulation.where(user: current_user, url: request.original_url).count.zero?
         Simulation.create(user: current_user, url: request.original_url)

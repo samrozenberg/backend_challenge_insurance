@@ -32,7 +32,7 @@
     <h3>Suggested covers</h3>
     <p>Based on the information in your request, you will find here the available covers that we advise you to take:</p>
     <%# <%= @quote.as_json %>
-    <% if @quote.dig("success") == true %>
+    <% if @quote && @quote.dig("success") == true %>
       <div class="d-flex justify-content-around">
         <table>
           <tr>
@@ -87,38 +87,40 @@
     <%= link_to "You don't have an account ? Sign up !", new_user_registration_path, class: "btn btn-success mt-3" %>
   </div>
 <% else %>
-  <h2>Your Simulations</h2>
-  <% if @simulations.count > 0 %>
-    <table class="mb-3">
-    <tr>
-      <th>Date</th>
-      <th>Annual Revenue</th>
-      <th>Enterprise Number</th>
-      <th>Legal Name</th>
-      <th>Natural Person</th>
-      <th>Profession</th>
-    </tr>
-    <% @simulations.reverse.each do |simulation| %>
-      <tr>
-        <td><%= simulation.created_at.strftime("%e %^b %Y") %></td>
-        <% uri = URI.parse(simulation.url) %>
-        <% params = CGI.parse(uri.query) %>
-        <td><%= params['annual_revenue'].first %></td>
-        <td><%= params["enterprise_number"].first %></td>
-        <td><%= params["legal_name"].first %></td>
-        <% if params["natural_person"].count == 2 %>
-          <td>Yes</td>
-        <% else %>
-          <td>No</td>
+  <div class="text-center">
+    <h2 class="mt-4 mb-3">Your Simulations</h2>
+    <% if @simulations.count > 0 %>
+      <table style="margin-left:auto;margin-right:auto;" class="mb-3">
+        <tr>
+          <th>Date</th>
+          <th>Annual Revenue</th>
+          <th>Enterprise Number</th>
+          <th>Legal Name</th>
+          <th>Natural Person</th>
+          <th>Profession</th>
+        </tr>
+        <% @simulations.reverse.each do |simulation| %>
+          <tr>
+            <td><%= simulation.created_at.strftime("%e %^b %Y") %></td>
+            <% uri = URI.parse(simulation.url) %>
+            <% params = CGI.parse(uri.query) %>
+            <td><%= params['annual_revenue'].first %></td>
+            <td><%= params["enterprise_number"].first %></td>
+            <td><%= params["legal_name"].first %></td>
+            <% if params["natural_person"].count == 2 %>
+              <td>Yes</td>
+            <% else %>
+              <td>No</td>
+            <% end %>
+            <td><%= params["profession"].first %></td>
+            <td><%= link_to "Open", "#{simulation.url}" %></td>
+          </tr>
         <% end %>
-        <td><%= params["profession"].first %></td>
-        <td><%= link_to "Open", "#{simulation.url}" %></td>
-      </tr>
+      </table>
+    <% else %>
+    <p>You don't have any simulation yet.</p>
     <% end %>
-  </table>
-  <% else %>
-  <p>You don't have any simulation yet.</p>
-  <% end %>
+  </div>
 
 <% end %>
 
