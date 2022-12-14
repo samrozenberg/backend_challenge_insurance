@@ -3,7 +3,7 @@ class ApiClient
     @params = params
     @connection = Faraday.new(
       url: 'https://staging-gtw.seraphin.be',
-      headers: { 'Content-Type' => 'application/json', 'X-Api-Key' => ENV['KEY'] }
+      headers: { 'Content-Type' => 'application/json', 'X-Api-Key' => "fABF1NGkfn5fpHuJHrbvG3niQX6A1CO53ftF9ASD" }
     )
   end
 
