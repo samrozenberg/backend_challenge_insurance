@@ -4,6 +4,7 @@ class PagesController < ApplicationController
   def home
     # @quote = Quote.new
     @simulations = Simulation.where(user: current_user)
+    raise
     if request.original_fullpath.include?("annual_revenue")
       if (QuoteReader.new(params[:profession]).codes - QuoteReader.new("medical").codes).count < QuoteReader.new("medical").codes.count
         @ded_formula = "small"
