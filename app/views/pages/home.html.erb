@@ -87,8 +87,38 @@
     <%= link_to "You don't have an account ? Sign up !", new_user_registration_path, class: "btn btn-success mt-3" %>
   </div>
 <% else %>
-
-  # Display simulation
+  <h2>Your Simulations</h2>
+  <% if @simulations.count > 0 %>
+    <table class="mb-3">
+    <tr>
+      <th>Date</th>
+      <th>Annual Revenue</th>
+      <th>Enterprise Number</th>
+      <th>Legal Name</th>
+      <th>Natural Person</th>
+      <th>Profession</th>
+    </tr>
+    <% @simulations.reverse.each do |simulation| %>
+      <tr>
+        <td><%= simulation.created_at.strftime("%e %^b %Y") %></td>
+        <% uri = URI.parse(simulation.url) %>
+        <% params = CGI.parse(uri.query) %>
+        <td><%= params['annual_revenue'].first %></td>
+        <td><%= params["enterprise_number"].first %></td>
+        <td><%= params["legal_name"].first %></td>
+        <% if params["natural_person"].count == 2 %>
+          <td>Yes</td>
+        <% else %>
+          <td>No</td>
+        <% end %>
+        <td><%= params["profession"].first %></td>
+        <td><%= link_to "Open", "#{simulation.url}" %></td>
+      </tr>
+    <% end %>
+  </table>
+  <% else %>
+  <p>You don't have any simulation yet.</p>
+  <% end %>
 
 <% end %>
 

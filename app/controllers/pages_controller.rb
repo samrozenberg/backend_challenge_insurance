@@ -12,6 +12,7 @@ class PagesController < ApplicationController
         "nacebelCodes": QuoteReader.new(params[:profession]).codes
       }
       @quote = ApiClient.new(quote_params).quote
+      @simulations = Simulation.where(user: current_user)
 
       if @quote["success"] && Simulation.where(user: current_user, url: request.original_url).count.zero?
         Simulation.create(user: current_user, url: request.original_url)
