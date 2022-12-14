@@ -1,27 +1,80 @@
 <div class="container mt-3">
-<h1 class="text-center">Generate your RC Pro simulation</h1>
+<h1 class="text-center mb-3">Generate your RC Pro simulation</h1>
 
 
-<%= @quote.as_json %>
 
-<div>
-  <%= form_with url: root_path, method: :get do |form| %>
-    <%= form.label :annual_revenue %>
-    <%= form.number_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
-    <br>
-    <%= form.label :enterprise_number %>
-    <%= form.text_field :enterprise_number, class: "mb-3", value: params[:enterprise_number] %>
-    <br>
-    <%= form.label :legal_name %>
-    <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
-    <br>
-    <%= form.label :natural_person %>
-    <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].to_i == 1 %>
-    <br>
-    <%= form.label :profession %>
-    <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>
-    <br>
-    <%= form.submit "Search" %>
-  <% end %>
+<div class="d-flex justify-content-between">
+  <div class="w-50">
+    <%= form_with url: root_path, method: :get do |form| %>
+      <%= form.label :annual_revenue %>
+      <%= form.number_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
+      <br>
+      <%= form.label :enterprise_number %>
+      <%= form.text_field :enterprise_number, class: "mb-3", value: params[:enterprise_number] %>
+      <br>
+      <%= form.label :legal_name %>
+      <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
+      <br>
+      <%= form.label :natural_person %>
+      <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].to_i == 1 %>
+      <br>
+      <%= form.label :profession %>
+      <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>
+      <br>
+      <%= form.submit "Search" %>
+    <% end %>
+  </div>
+
+  <div class="w-50">
+    <h3>Suggested covers</h3>
+    <p>Based on the information in your request, here are the available covers that we advise you to take:</p>
+    <%= @quote.as_json %>
+    <div class="d-flex justify-content-around">
+      <table>
+        <tr>
+          <th>Covers' costs</th>
+        </tr>
+        <tr>
+          <th>After Delivery</th>
+          <td><%= @quote.dig("data", "grossPremiums", "afterDelivery") %>€</td>
+        </tr>
+        <tr>
+          <th>Public Liability</th>
+          <td><%= @quote.dig("data", "grossPremiums", "publicLiability") %>€</td>
+        </tr>
+        <tr>
+          <th>Professional Indemnity</th>
+          <td><%= @quote.dig("data", "grossPremiums", "professionalIndemnity") %>€</td>
+        </tr>
+        <tr>
+          <th>Entrusted Objects</th>
+          <td><%= @quote.dig("data", "grossPremiums", "entrustedObjects") %>€</td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Coverage Ceiling</th>
+          <td><%= @quote.dig("data", "coverageCeiling") %>€</td>
+        </tr>
+        <tr>
+          <th>Deductible</th>
+          <td><%= @quote.dig("data", "deductible") %>€</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
+
+<% if !user_signed_in? %>
+  <div class="mt-5 text-center">
+    <%= link_to "Login to Save and Display your simulations", new_user_session_path, class: "btn btn-primary" %>
+  </div>
+<% else %>
+
+  # Display simulation
+
+<% end %>
+
+
+
 </div>
