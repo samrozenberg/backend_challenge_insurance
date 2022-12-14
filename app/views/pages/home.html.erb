@@ -9,20 +9,20 @@
 <div class="d-flex justify-content-between">
   <div class="w-50">
     <%= form_with url: root_path, method: :get do |form| %>
-      <%= form.label :annual_revenue %>
-      <%= form.number_field :annual_revenue, class: "mb-3", value: params[:annual_revenue] %>
+      <%= form.label :annual_revenue%>
+      <%= form.number_field :annual_revenue, class: "mb-3", placeholder: "In €", value: params[:annual_revenue] %>
       <br>
       <%= form.label :enterprise_number %>
-      <%= form.text_field :enterprise_number, class: "mb-3", value: params[:enterprise_number] %>
+      <%= form.text_field :enterprise_number, class: "mb-3", placeholder: "must be 10 digits", value: params[:enterprise_number] %>
       <br>
       <%= form.label :legal_name %>
       <%= form.text_field :legal_name, class: "mb-3", value: params[:legal_name] %>
       <br>
       <%= form.label :natural_person %>
-      <%= form.check_box :natural_person, class: "mb-3", checked: params[:natural_person].to_i == 1 %>
+      <%= form.check_box :natural_person, class: "mb-3",  checked: params[:natural_person].to_i == 1 %>
       <br>
-      <%= form.label :profession %>
-      <%= form.text_field :profession, class: "mb-3", value: params[:profession] %>
+      <%= form.label :profession, "Area of work" %>
+      <%= form.text_field :profession, class: "mb-3", placeholder: "'medical', 'education',...", value: params[:profession] %>
       <br>
       <%= form.submit "Generate" %>
     <% end %>
@@ -61,11 +61,11 @@
         </table>
         <table>
           <tr>
-            <th>Coverage Ceiling</th>
+            <th>Coverage Ceiling<br>(<%= @cov_formula %> formula suggested)</th>
             <td><%= @quote.dig("data", "coverageCeiling") %>€</td>
           </tr>
           <tr>
-            <th>Deductible</th>
+            <th>Deductible<br>(<%= @ded_formula %> formula suggested)</th>
             <td><%= @quote.dig("data", "deductible") %>€</td>
           </tr>
         </table>
