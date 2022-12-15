@@ -1,4 +1,4 @@
-<h4> This challenge uses a digital insurance API in order to create the backbone of a self-employed insurance adviser web app.</h4>
+<h4> This challenge uses an insurance API in order to create the backbone of a self-employed insurance adviser web app.</h4>
 
 <img width="1432" alt="Capture d’écran 2022-12-15 à 02 47 01" src="https://user-images.githubusercontent.com/90610969/207753274-a0065d93-bf21-48cb-bb0b-aa65521ff7d0.png">
 
